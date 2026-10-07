@@ -32,7 +32,7 @@ These figures come from executing the pipeline on the downloaded UCI workbook:
 | Accepted net ERP scope | £17,148,219.34 |
 | Accepted return documents | 5,301 |
 
-The count and signed revenue disposition reconcile exactly to source. **ERP posting and GL controls are not reported as passed** because the local Docker daemon did not become responsive during this build; the Compose definition itself validates successfully, and the execution/runbook artifacts are ready.
+The count and signed revenue disposition reconcile exactly to source. A controlled live ERPNext 16.50.0 UAT was also executed on 2026-10-07: the HTTP health check returned 200, a £39.90 invoice and linked -£39.90 credit note were submitted, each voucher balanced at £40.00 debit and credit, and the integration-only user was denied submit permission. The full 42,270-document accepted population was intentionally **not** posted to the portfolio environment.
 
 ## Architecture and controls
 
@@ -64,6 +64,15 @@ python scripts/migrate_to_erpnext.py --batch-id <BATCH-ID> --limit 10
 
 Draft creation is the default. Enable submission only after reviewing a controlled UAT sample, access assignments, period status, and reconciliation.
 
+The reproducible live accounting check used for this repository is:
+
+```powershell
+docker compose cp scripts/live_erpnext_uat.py backend:/home/frappe/frappe-bench/apps/erpnext/erpnext/live_otc_uat.py
+docker compose exec -T backend bench --site frontend execute erpnext.live_otc_uat.run
+```
+
+See [the live verification report](docs/11_live_verification_report.md) for the exact document IDs, GL totals, SQL cross-checks, and scope boundary.
+
 ## Repository guide
 
 | Path | Contents |
@@ -84,5 +93,5 @@ ERP references: [ERPNext accounting entries](https://docs.frappe.io/erpnext/acco
 
 ## Honest scope statement
 
-This is a portfolio implementation using real public transaction data and a locally reproducible ERPNext configuration. It is not a production migration, does not contain a real retailer's named customers, and does not claim production approval, Power BI Service deployment, or passed ERP/GL controls without live execution evidence.
+This is a portfolio implementation using real public transaction data and a locally reproducible ERPNext configuration. It is not a production migration, does not contain a real retailer's named customers, and does not claim production approval, Power BI Service deployment, or a full-population ERP migration. Live ERP/GL claims are limited to the documented controlled UAT sample.
 

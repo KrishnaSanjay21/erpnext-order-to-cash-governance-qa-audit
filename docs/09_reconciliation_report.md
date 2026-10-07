@@ -3,7 +3,7 @@
 **Dataset:** UCI Online Retail II  
 **Source archive SHA-256:** `572e36277c2390fbfde10664750731e0a86f55e33470d91919085f0408e67bfb`  
 **Execution date:** 2026-10-07  
-**ERP posting status:** Not run; Docker configuration is validated, but no ERP or GL totals are represented as executed.
+**ERP posting status:** Controlled live UAT passed on ERPNext 16.50.0; full accepted population not run.
 
 ## Source control totals
 
@@ -39,9 +39,24 @@ Reason counts are non-additive because one row can fail multiple controls.
 | DQ007 negative non-cancellation quantity | 3,457 |
 | DQ008 non-negative cancellation quantity | 1 |
 
-## ERP reconciliation gates
+## Controlled live ERP reconciliation
 
-These remain **NOT RUN** until the environment has actual ERP evidence:
+| Measure | Observed |
+|---|---:|
+| Sale | `ACC-SINV-2026-00001`, £39.90, submitted |
+| Linked credit note | `ACC-SINV-2026-00002`, -£39.90, submitted |
+| Credit-note link | `return_against = ACC-SINV-2026-00001` |
+| Net amount | £0.00 |
+| Sale GL | £40.00 debit = £40.00 credit; £0.00 difference |
+| Return GL | £40.00 debit = £40.00 credit; £0.00 difference |
+| Lineage | Unique source invoice and batch IDs retained on both documents |
+| Access check | Integration-only user cannot submit Sales Invoices |
+
+The £0.10 round-off entry on each voucher explains the difference between the £39.90 document total and £40.00 balanced GL turnover. See `docs/11_live_verification_report.md` for exact SQL evidence.
+
+## Full-population ERP reconciliation gates
+
+These remain **NOT RUN** because the controlled UAT does not represent a full migration:
 
 1. Accepted documents versus successful ERP Sales Invoice audit rows.
 2. Accepted signed revenue versus ERP invoice grand totals.

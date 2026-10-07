@@ -4,4 +4,5 @@ DEF-002,DQ009,High,Cancellation cannot be defensibly linked to one original sale
 DEF-003,DQ006,Medium,Non-positive unit price,6207,Open,Data Steward,Before migration,"Classify free goods/manual adjustments; map only approved accounting treatment","DQ006 exception population signed off"
 DEF-004,DQ007,Medium,Negative quantity on non-cancellation invoice,3457,Open,OTC Lead,Before migration,"Investigate adjustment semantics and correct source classification","No accepted non-cancellation line has non-positive quantity"
 DEF-005,DQ008,Medium,Cancellation has non-negative quantity,1,Open,Data Steward,Before migration,"Correct source sign or reclassify after evidence","DQ008 equals zero or exception approved"
+DEF-006,ENV-001,High,Compose site initializer split the bench command across shell lines,1,Closed,Data Engineer,2026-10-07,"Use one shell command with explicit site argument and options","create-site exited 0; ERPNext 16.50.0 installed; ping returned 200"
 

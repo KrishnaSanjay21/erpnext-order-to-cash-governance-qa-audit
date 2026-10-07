@@ -37,3 +37,14 @@ Python unit tests verify canonicalization, validation, idempotency, payload stru
 - **BLOCKED**: environment or upstream dependency unavailable; not counted as a pass.
 - **NOT RUN**: execution has not begun. Never report NOT RUN/BLOCKED as passed.
 
+## Live execution evidence — 2026-10-07
+
+| ID | Status | Observed evidence |
+|---|---|---|
+| UAT-001 | PASS | Submitted `ACC-SINV-2026-00001`; source and batch lineage retained. |
+| UAT-002 | PASS | Submitted `ACC-SINV-2026-00002`; linked to the original with `return_against`. |
+| UAT-006 | PASS | `otc.integration@example.com` returned false for Sales Invoice submit permission. |
+| UAT-010 | PASS | Both documents produced three active GL lines and a £0.00 debit-credit difference. |
+
+The other UAT cases remain **NOT RUN** in ERP unless separately supported by the source-validation or automated-test evidence. Results are documented in `docs/11_live_verification_report.md`.
+
