@@ -1,0 +1,7 @@
+role,customer_read,item_read,invoice_create,invoice_edit_draft,invoice_submit,invoice_cancel,gl_read,user_role_admin,control_notes
+OTC Integration User,Yes,Yes,Yes,Yes,No,No,No,No,API-only least privilege
+OTC Invoice Preparer,Yes,Yes,Yes,Yes,No,No,No,No,Cannot approve own work
+OTC Invoice Approver,Yes,Yes,No,No,Yes,Yes,Yes,No,Mutually exclusive with Preparer
+OTC Auditor,Yes,Yes,No,No,No,No,Yes,No,Read-only evidence access
+System Manager,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Emergency/admin access reviewed separately
+

@@ -1,0 +1,7 @@
+defect_id,control_id,severity,title,observed_count,status,owner,target_resolution,remediation,verification
+DEF-001,DQ001,High,Source rows lack CustomerID,243007,Open,Data Steward,Before production migration,"Quarantine; obtain source identity crosswalk or approved anonymous-customer policy","Re-run DQ001; no unapproved anonymous receivables"
+DEF-002,DQ009,High,Cancellation cannot be defensibly linked to one original sale,9047,Open,OTC Lead,Before return migration,"Quarantine; research external invoice lineage or obtain business approval","Every migrated return has return_against and amount check"
+DEF-003,DQ006,Medium,Non-positive unit price,6207,Open,Data Steward,Before migration,"Classify free goods/manual adjustments; map only approved accounting treatment","DQ006 exception population signed off"
+DEF-004,DQ007,Medium,Negative quantity on non-cancellation invoice,3457,Open,OTC Lead,Before migration,"Investigate adjustment semantics and correct source classification","No accepted non-cancellation line has non-positive quantity"
+DEF-005,DQ008,Medium,Cancellation has non-negative quantity,1,Open,Data Steward,Before migration,"Correct source sign or reclassify after evidence","DQ008 equals zero or exception approved"
+

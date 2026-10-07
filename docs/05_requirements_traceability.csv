@@ -1,0 +1,12 @@
+requirement_id,design_artifact,implementation,evidence,status
+FR-01,docs/01_requirements.md,src/otc_audit/source.py,tests/test_source.py; source manifest; published row gate,Implemented
+FR-02,docs/03_source_to_target_mapping.csv,src/otc_audit/migration.py,tests/test_migration.py,Implemented
+FR-03,docs/03_source_to_target_mapping.csv,src/otc_audit/erpnext.py,tests/test_erpnext.py,Implemented
+FR-04,docs/02_process_map.md,src/otc_audit/validation.py; src/otc_audit/erpnext.py,tests/test_validation.py; tests/test_erpnext.py,Implemented
+FR-05,config/validation_rules.yml,src/otc_audit/validation.py,validated/accepted/rejected parquet outputs,Implemented
+FR-06,sql/warehouse_schema.sql,src/otc_audit/warehouse.py; src/otc_audit/migration.py,tests/test_warehouse.py; payload-hash branch,Implemented
+FR-07,docs/09_reconciliation_report.md,src/otc_audit/cli.py; sql/controls/02_reconciliation.sql,validation_summary.json,Implemented
+FR-08,docs/06_test_plan.md,sql/controls/03_erp_gl_balance.sql,UAT-010 after live ERP submission,Ready for ERP execution
+FR-09,docs/07_rbac_matrix.csv,sql/controls/04_access_conflicts.sql,UAT-006 and access extract,Ready for ERP execution
+FR-10,docs/10_troubleshooting_runbook.md,docker-compose.yml; migration_audit,REG-005 replay test,Implemented
+
