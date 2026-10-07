@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 from pathlib import Path
 
 import pandas as pd
@@ -19,14 +18,6 @@ ERROR_COLUMNS = {
     "DQ008": "nonnegative_return_quantity",
     "DQ009": "unmatched_return",
 }
-
-
-def _row_hash(row: pd.Series) -> str:
-    values = [str(row.get(name, "")) for name in (
-        "invoice_no", "stock_code", "quantity", "invoice_date",
-        "unit_price", "customer_id", "country",
-    )]
-    return hashlib.sha256("|".join(values).encode()).hexdigest()
 
 
 def validate_transactions(frame: pd.DataFrame) -> pd.DataFrame:
@@ -51,18 +42,22 @@ def validate_transactions(frame: pd.DataFrame) -> pd.DataFrame:
     for rule, column in ERROR_COLUMNS.items():
         result[column] = flags[rule].fillna(True)
 
-    reason_frame = pd.DataFrame(
-        {rule: flags[rule].fillna(True).map({True: rule, False: ""}) for rule in flags},
-        index=result.index,
-    )
-    result["reason_codes"] = reason_frame.agg(
-        lambda row: "|".join(value for value in row if value), axis=1
-    )
+    result["reason_codes"] = ""
+    for rule, flag in flags.items():
+        failed = flag.fillna(True)
+        separator = result.loc[failed, "reason_codes"].ne("").map({True: "|", False: ""})
+        result.loc[failed, "reason_codes"] += separator + rule
     result["record_status"] = result["reason_codes"].map(lambda value: "REJECTED" if value else "ACCEPTED")
     result["document_type"] = is_return.map({True: "RETURN", False: "SALE"})
     result["original_invoice_no"] = original
     result["line_amount"] = result["quantity"].astype("float64") * result["unit_price"]
-    result["source_line_hash"] = result.apply(_row_hash, axis=1)
+    hash_columns = [
+        "invoice_no", "stock_code", "quantity", "invoice_date",
+        "unit_price", "customer_id", "country",
+    ]
+    result["source_line_hash"] = pd.util.hash_pandas_object(
+        result[hash_columns], index=False
+    ).map(lambda value: f"{value:016x}")
     return result
 
 
