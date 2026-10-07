@@ -1,0 +1,17 @@
+mapping_id,source_field,source_type,transformation,target_doctype,target_field,validation,control_id
+MAP-001,CustomerID,nullable number,"integer-normalize; prefix UCI-CUST-",Customer,name,required,DQ001
+MAP-002,CustomerID,nullable number,"preserve normalized value",Customer,custom_source_customer_id,required and unique,DQ001
+MAP-003,Country,text,"trim; default Unknown only after acceptance",Customer,custom_source_country,informational,
+MAP-004,StockCode,mixed text/number,"string-normalize; prefix UCI-ITEM-",Item,name,required,DQ003
+MAP-005,Description,text,"trim; first chronological description",Item,item_name,max 140 characters,
+MAP-006,InvoiceNo,mixed text/number,"string-normalize; C prefix identifies cancellation",Sales Invoice,custom_source_invoice_no,required and unique,DQ002
+MAP-007,InvoiceDate,datetime,"parse; date component",Sales Invoice,posting_date,valid datetime,DQ004
+MAP-008,CustomerID,nullable number,"lookup UCI-CUST key",Sales Invoice,customer,existing accepted customer,DQ001
+MAP-009,StockCode,mixed text/number,"lookup UCI-ITEM key",Sales Invoice Item,item_code,existing accepted item,DQ003
+MAP-010,Quantity,integer,"preserve sign; positive sale / negative return",Sales Invoice Item,qty,nonzero and sign consistent,DQ005|DQ007|DQ008
+MAP-011,Price,decimal GBP,"numeric cast",Sales Invoice Item,rate,greater than zero,DQ006
+MAP-012,Quantity × Price,decimal GBP,"line calculation; round only at reporting",Sales Invoice Item,amount,reconciled to source,REC003
+MAP-013,source sheet + Excel row,lineage,"sheet:row",Sales Invoice Item,custom_source_row_id,required lineage,LIN001
+MAP-014,InvoiceNo without C,document reference,"resolve prior migrated ERP invoice",Sales Invoice,return_against,original must exist,DQ009
+MAP-015,batch identifier,lineage,"generated from date and UUID",Sales Invoice,custom_migration_batch_id,required lineage,LIN002
+
