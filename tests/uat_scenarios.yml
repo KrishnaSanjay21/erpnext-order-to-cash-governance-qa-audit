@@ -1,0 +1,33 @@
+version: 1
+cases:
+  - id: UAT-001
+    scenario: normal_sale
+    expected: draft_invoice_with_lineage
+  - id: UAT-002
+    scenario: product_return
+    expected: negative_invoice_linked_to_submitted_original
+  - id: UAT-003
+    scenario: duplicate_invoice
+    expected: identical_payload_skipped_changed_payload_blocked
+  - id: UAT-004
+    scenario: invalid_customer
+    expected: rejected_DQ001_no_api_call
+  - id: UAT-005
+    scenario: missing_item
+    expected: rejected_DQ003_no_api_call
+  - id: UAT-006
+    scenario: unauthorized_approval
+    expected: preparer_permission_denied
+  - id: UAT-007
+    scenario: corrected_file_reprocessing
+    expected: new_checksum_new_batch_prior_evidence_immutable
+  - id: UAT-008
+    scenario: period_close
+    expected: unauthorized_closed_period_posting_denied
+  - id: UAT-009
+    scenario: batch_recovery
+    expected: successes_skipped_failures_retried_no_duplicates
+  - id: UAT-010
+    scenario: balanced_general_ledger
+    expected: absolute_debit_credit_variance_at_most_0.01
+
