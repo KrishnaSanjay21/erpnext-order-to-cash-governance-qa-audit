@@ -12,7 +12,6 @@ import httpx
 import pandas as pd
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
-
 DATASET_URL = "https://archive.ics.uci.edu/static/public/502/online%2Bretail%2Bii.zip"
 DATASET_DOI = "https://doi.org/10.24432/C5CG6D"
 EXPECTED_ROWS = 1_067_371

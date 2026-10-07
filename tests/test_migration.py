@@ -3,7 +3,6 @@ import pandas as pd
 from otc_audit.erpnext import MigrationConfig
 from otc_audit.migration import migrate_masters
 
-
 CONFIG = MigrationConfig(
     company="UCI Retail Audit Ltd", currency="GBP", territory="All Territories",
     customer_group="Commercial", item_group="Items", warehouse="Stores - URA",

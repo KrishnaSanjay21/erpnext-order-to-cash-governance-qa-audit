@@ -13,7 +13,6 @@ from .source import download_dataset, extract_workbook, load_workbook, sha256_fi
 from .validation import validate_transactions, write_validation_outputs
 from .warehouse import complete_validation, export_dashboard_tables, open_warehouse, register_batch
 
-
 app = typer.Typer(no_args_is_help=True)
 ROOT = Path(__file__).parents[2]
 

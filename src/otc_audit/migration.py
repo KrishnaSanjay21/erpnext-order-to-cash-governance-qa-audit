@@ -96,7 +96,7 @@ def migrate_invoices(
             _record(connection, batch_id, source_no, "Sales Invoice", digest, "SUCCESS", name, json.dumps(document))
             originals[source_no] = name
             summary["created" if not existing else "skipped"] += 1
-        except Exception as exc:  # audit and continue so one document does not lose the batch
+        except Exception as exc:  # noqa: BLE001 - audit and continue at the document boundary
             digest = payload_hash(payload) if payload is not None else "NOT_BUILT"
             _record(connection, batch_id, source_no, "Sales Invoice", digest, "FAILED", None, repr(exc))
             summary["failed"] += 1

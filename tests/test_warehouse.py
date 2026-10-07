@@ -2,7 +2,6 @@ from pathlib import Path
 
 from otc_audit.warehouse import complete_validation, open_warehouse, register_batch
 
-
 SCHEMA = Path(__file__).parents[1] / "sql" / "warehouse_schema.sql"
 
 

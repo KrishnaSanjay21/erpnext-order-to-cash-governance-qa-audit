@@ -13,7 +13,6 @@ from otc_audit.migration import migrate_invoices, migrate_masters
 from otc_audit.settings import Settings
 from otc_audit.warehouse import open_warehouse
 
-
 ROOT = Path(__file__).parents[1]
 
 

@@ -1,8 +1,8 @@
 from pathlib import Path
 
 from otc_audit.dashboard import build_dashboard_facts
-from tests.test_validation import sample
 from otc_audit.validation import validate_transactions
+from tests.test_validation import sample
 
 
 def test_dashboard_facts_reconcile_to_validated_rows(tmp_path: Path):

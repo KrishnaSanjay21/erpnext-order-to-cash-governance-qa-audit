@@ -3,7 +3,6 @@ import pytest
 
 from otc_audit.erpnext import MigrationConfig, invoice_payload, payload_hash, safe_key
 
-
 CONFIG = MigrationConfig(
     company="UCI Retail Audit Ltd", currency="GBP", territory="All Territories",
     customer_group="Commercial", item_group="Items", warehouse="Stores - URA",

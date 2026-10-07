@@ -6,7 +6,6 @@ from pathlib import Path
 
 import pandas as pd
 
-
 ERROR_COLUMNS = {
     "DQ001": "missing_customer",
     "DQ002": "missing_invoice",

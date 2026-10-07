@@ -8,7 +8,6 @@ from pathlib import Path
 from otc_audit.erpnext import ERPNextClient
 from otc_audit.settings import Settings
 
-
 ROOT = Path(__file__).parents[1]
 
 
