@@ -11,10 +11,10 @@ class Settings(BaseSettings):
     erpnext_base_url: str = "http://localhost:8080"
     erpnext_api_key: str = "replace-me"
     erpnext_api_secret: str = "replace-me"
-    erpnext_company: str = "UCI Online Retail Ltd"
-    erpnext_abbr: str = "UOR"
-    erpnext_warehouse: str = "Stores - UOR"
-    erpnext_cost_center: str = "Main - UOR"
+    erpnext_company: str = "UCI Retail Audit Ltd"
+    erpnext_abbr: str = "URA"
+    erpnext_warehouse: str = "Stores - URA"
+    erpnext_cost_center: str = "Main - URA"
     erpnext_posting_mode: str = "draft"
     otc_data_dir: Path = Path("data")
     otc_control_db: Path = Path("warehouse/otc_audit.duckdb")
