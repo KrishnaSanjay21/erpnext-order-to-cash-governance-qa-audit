@@ -15,7 +15,7 @@
 | `country` | string | Source destination country. |
 | `line_amount` | decimal | `quantity × unit_price`; signed, unrounded analytical amount. |
 | `document_type` | enum | `SALE` or `RETURN`, derived from invoice prefix. |
-| `original_invoice_no` | nullable string | Cancellation identifier after removing `C`. |
+| `original_invoice_no` | nullable string | Nearest prior sale matched on customer, item, unit price, and sufficient quantity; populated only when every cancellation line resolves to one original. |
 | `record_status` | enum | `ACCEPTED` only when no blocking rule failed; otherwise `REJECTED`. |
 | `reason_codes` | string | Pipe-delimited complete set of failed DQ controls. |
 | `source_line_hash` | hex string | Deterministic 64-bit content fingerprint for duplicate analysis. |

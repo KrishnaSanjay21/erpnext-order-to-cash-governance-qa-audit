@@ -12,6 +12,6 @@ MAP-010,Quantity,integer,"preserve sign; positive sale / negative return",Sales 
 MAP-011,Price,decimal GBP,"numeric cast",Sales Invoice Item,rate,greater than zero,DQ006
 MAP-012,Quantity × Price,decimal GBP,"line calculation; round only at reporting",Sales Invoice Item,amount,reconciled to source,REC003
 MAP-013,source sheet + Excel row,lineage,"sheet:row",Sales Invoice Item,custom_source_row_id,required lineage,LIN001
-MAP-014,InvoiceNo without C,document reference,"resolve prior migrated ERP invoice",Sales Invoice,return_against,original must exist,DQ009
+MAP-014,cancellation line attributes,document reference,"nearest prior sale on customer/item/price with sufficient quantity; all lines must resolve to one invoice",Sales Invoice,return_against,one original must exist,DQ009
 MAP-015,batch identifier,lineage,"generated from date and UUID",Sales Invoice,custom_migration_batch_id,required lineage,LIN002
 

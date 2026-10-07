@@ -44,5 +44,5 @@ rules:
     field: invoice_no
     severity: error
     condition: return_matches_original
-    message: Cancellation must reference an existing original invoice number.
+    message: Every cancellation line must match the same prior sale by customer, item, price, and sufficient sold quantity.
 
