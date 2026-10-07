@@ -1,0 +1,19 @@
+roles:
+  - OTC Integration User
+  - OTC Invoice Preparer
+  - OTC Invoice Approver
+  - OTC Auditor
+segregation_of_duties:
+  forbidden_combinations:
+    - [OTC Invoice Preparer, OTC Invoice Approver]
+workflow:
+  document_type: Sales Invoice
+  states:
+    - Draft
+    - Pending Approval
+    - Approved
+    - Rejected
+  transitions:
+    - {from: Draft, action: Submit for Approval, to: Pending Approval, role: OTC Invoice Preparer}
+    - {from: Pending Approval, action: Approve, to: Approved, role: OTC Invoice Approver}
+    - {from: Pending Approval, action: Reject, to: Rejected, role: OTC Invoice Approver}

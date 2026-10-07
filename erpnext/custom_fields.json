@@ -1,0 +1,9 @@
+[
+  {"dt":"Customer","fieldname":"custom_source_customer_id","label":"Source Customer ID","fieldtype":"Data","unique":1,"insert_after":"customer_name","read_only":1},
+  {"dt":"Customer","fieldname":"custom_source_country","label":"Source Country","fieldtype":"Data","insert_after":"custom_source_customer_id","read_only":1},
+  {"dt":"Item","fieldname":"custom_source_stock_code","label":"Source Stock Code","fieldtype":"Data","unique":1,"insert_after":"item_name","read_only":1},
+  {"dt":"Sales Invoice","fieldname":"custom_source_invoice_no","label":"Source Invoice No","fieldtype":"Data","unique":1,"insert_after":"customer","read_only":1},
+  {"dt":"Sales Invoice","fieldname":"custom_migration_batch_id","label":"Migration Batch ID","fieldtype":"Data","insert_after":"custom_source_invoice_no","read_only":1},
+  {"dt":"Sales Invoice Item","fieldname":"custom_source_row_id","label":"Source Row ID","fieldtype":"Data","insert_after":"item_code","read_only":1}
+]
+
