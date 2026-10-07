@@ -1,0 +1,10 @@
+{
+  "name": "OTC Governance",
+  "dataColors": ["#0B5C6B", "#2E86AB", "#E3A008", "#C2413B", "#64748B", "#16A085"],
+  "background": "#F5F7FA",
+  "foreground": "#172033",
+  "tableAccent": "#0B5C6B",
+  "visualStyles": {
+    "*": {"*": {"title": [{"fontFamily": "Segoe UI Semibold", "fontColor": {"solid": {"color": "#172033"}}}]}}
+  }
+}

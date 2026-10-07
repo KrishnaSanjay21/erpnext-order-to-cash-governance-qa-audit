@@ -1,0 +1,45 @@
+Source Rows = SUM(FactMonthlyDisposition[rows])
+
+Accepted Rows = CALCULATE([Source Rows], FactMonthlyDisposition[record_status] = "ACCEPTED")
+
+Rejected Rows = CALCULATE([Source Rows], FactMonthlyDisposition[record_status] = "REJECTED")
+
+Acceptance Rate = DIVIDE([Accepted Rows], [Source Rows])
+
+Accepted Documents =
+CALCULATE(
+    DISTINCTCOUNT(FactDocuments[invoice_no]),
+    FactDocuments[record_status] = "ACCEPTED"
+)
+
+Accepted Net Revenue =
+CALCULATE(
+    SUM(FactDocuments[net_revenue_gbp]),
+    FactDocuments[record_status] = "ACCEPTED"
+)
+
+Rejected Net Revenue =
+CALCULATE(
+    SUM(FactDocuments[net_revenue_gbp]),
+    FactDocuments[record_status] = "REJECTED"
+)
+
+Failed Control Rows = SUM(FactControlFailures[failed_rows])
+
+Return Documents =
+CALCULATE(
+    DISTINCTCOUNT(FactDocuments[invoice_no]),
+    FactDocuments[document_type] = "RETURN"
+)
+
+Unmatched Return Documents =
+CALCULATE(
+    DISTINCTCOUNT(FactDocuments[invoice_no]),
+    FactDocuments[document_type] = "RETURN",
+    FactDocuments[record_status] = "REJECTED"
+)
+
+Source Reconciliation Variance = 1067371 - [Source Rows]
+
+Reconciliation Status = IF([Source Reconciliation Variance] = 0, "PASS", "FAIL")
+
