@@ -65,12 +65,7 @@ services:
         if [ -d sites/${ERPNEXT_SITE:-frontend} ]; then
           echo "Site already exists";
         else
-          bench new-site --mariadb-user-host-login-scope='%'
-          --admin-password='${ERPNEXT_ADMIN_PASSWORD:-admin}'
-          --db-root-username=root
-          --db-root-password='${DB_ROOT_PASSWORD:-audit_dev_only}'
-          --install-app erpnext
-          --set-default ${ERPNEXT_SITE:-frontend};
+          bench new-site ${ERPNEXT_SITE:-frontend} --mariadb-user-host-login-scope='%' --admin-password='${ERPNEXT_ADMIN_PASSWORD:-admin}' --db-root-username=root --db-root-password='${DB_ROOT_PASSWORD:-audit_dev_only}' --install-app erpnext --set-default;
         fi
     depends_on:
       configurator:
