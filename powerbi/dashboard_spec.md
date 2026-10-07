@@ -5,7 +5,7 @@
 - KPI cards: source rows, accepted rows, rejected rows, acceptance rate, accepted net revenue, reconciliation status.
 - Monthly stacked columns: accepted/rejected rows; overlay signed revenue.
 - Control-status strip: source count, row disposition, ERP document count, revenue, GL balance, return links, access conflicts.
-- Prominent status: **ERP evidence NOT RUN** until live extracts are loaded.
+- Prominent status: **LIVE ERP UAT PASS / FULL POPULATION NOT RUN** until complete migration extracts are loaded.
 
 ## Page 2 — Data quality
 
