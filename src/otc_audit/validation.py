@@ -1,0 +1,83 @@
+"""Vectorized, reason-coded validation for the UCI migration scope."""
+
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+
+import pandas as pd
+
+
+ERROR_COLUMNS = {
+    "DQ001": "missing_customer",
+    "DQ002": "missing_invoice",
+    "DQ003": "missing_item",
+    "DQ004": "invalid_date",
+    "DQ005": "zero_quantity",
+    "DQ006": "nonpositive_price",
+    "DQ007": "negative_sale_quantity",
+    "DQ008": "nonnegative_return_quantity",
+    "DQ009": "unmatched_return",
+}
+
+
+def _row_hash(row: pd.Series) -> str:
+    values = [str(row.get(name, "")) for name in (
+        "invoice_no", "stock_code", "quantity", "invoice_date",
+        "unit_price", "customer_id", "country",
+    )]
+    return hashlib.sha256("|".join(values).encode()).hexdigest()
+
+
+def validate_transactions(frame: pd.DataFrame) -> pd.DataFrame:
+    """Return every source row with migration disposition and all triggered controls."""
+    result = frame.copy()
+    invoice = result["invoice_no"].astype("string")
+    is_return = invoice.str.upper().str.startswith("C", na=False)
+    original = invoice.str.slice(1).where(is_return)
+    sale_invoices = set(invoice.loc[~is_return].dropna().tolist())
+
+    flags = {
+        "DQ001": result["customer_id"].isna() | result["customer_id"].eq(""),
+        "DQ002": invoice.isna() | invoice.eq(""),
+        "DQ003": result["stock_code"].isna() | result["stock_code"].eq(""),
+        "DQ004": result["invoice_date"].isna(),
+        "DQ005": result["quantity"].isna() | result["quantity"].eq(0),
+        "DQ006": result["unit_price"].isna() | result["unit_price"].le(0),
+        "DQ007": (~is_return) & result["quantity"].le(0),
+        "DQ008": is_return & result["quantity"].ge(0),
+        "DQ009": is_return & ~original.isin(sale_invoices),
+    }
+    for rule, column in ERROR_COLUMNS.items():
+        result[column] = flags[rule].fillna(True)
+
+    reason_frame = pd.DataFrame(
+        {rule: flags[rule].fillna(True).map({True: rule, False: ""}) for rule in flags},
+        index=result.index,
+    )
+    result["reason_codes"] = reason_frame.agg(
+        lambda row: "|".join(value for value in row if value), axis=1
+    )
+    result["record_status"] = result["reason_codes"].map(lambda value: "REJECTED" if value else "ACCEPTED")
+    result["document_type"] = is_return.map({True: "RETURN", False: "SALE"})
+    result["original_invoice_no"] = original
+    result["line_amount"] = result["quantity"].astype("float64") * result["unit_price"]
+    result["source_line_hash"] = result.apply(_row_hash, axis=1)
+    return result
+
+
+def write_validation_outputs(validated: pd.DataFrame, processed_dir: Path) -> dict[str, int | float]:
+    processed_dir.mkdir(parents=True, exist_ok=True)
+    validated.to_parquet(processed_dir / "validated_transactions.parquet", index=False)
+    accepted = validated.loc[validated["record_status"].eq("ACCEPTED")]
+    rejected = validated.loc[validated["record_status"].eq("REJECTED")]
+    accepted.to_parquet(processed_dir / "accepted_transactions.parquet", index=False)
+    rejected.to_parquet(processed_dir / "rejected_transactions.parquet", index=False)
+    return {
+        "source_rows": len(validated),
+        "accepted_rows": len(accepted),
+        "rejected_rows": len(rejected),
+        "accepted_net_revenue_gbp": round(float(accepted["line_amount"].sum()), 2),
+        "rejected_net_revenue_gbp": round(float(rejected["line_amount"].sum()), 2),
+    }
+

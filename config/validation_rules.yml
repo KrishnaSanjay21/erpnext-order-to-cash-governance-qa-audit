@@ -1,0 +1,48 @@
+version: 1
+rules:
+  - id: DQ001
+    field: customer_id
+    severity: error
+    condition: required
+    message: CustomerID is required for ERP customer and receivable posting.
+  - id: DQ002
+    field: invoice_no
+    severity: error
+    condition: required
+    message: Invoice number is required.
+  - id: DQ003
+    field: stock_code
+    severity: error
+    condition: required
+    message: Item stock code is required.
+  - id: DQ004
+    field: invoice_date
+    severity: error
+    condition: valid_datetime
+    message: Invoice date must parse as a timestamp.
+  - id: DQ005
+    field: quantity
+    severity: error
+    condition: nonzero
+    message: Quantity cannot be zero.
+  - id: DQ006
+    field: unit_price
+    severity: error
+    condition: positive
+    message: Unit price must be greater than zero for migratable merchandise.
+  - id: DQ007
+    field: quantity
+    severity: error
+    condition: sale_positive
+    message: Non-cancellation invoice quantities must be positive.
+  - id: DQ008
+    field: quantity
+    severity: error
+    condition: return_negative
+    message: Cancellation invoice quantities must be negative.
+  - id: DQ009
+    field: invoice_no
+    severity: error
+    condition: return_matches_original
+    message: Cancellation must reference an existing original invoice number.
+
