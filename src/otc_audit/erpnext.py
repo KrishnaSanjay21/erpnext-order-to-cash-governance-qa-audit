@@ -6,7 +6,6 @@ import hashlib
 import json
 import re
 from dataclasses import dataclass
-from datetime import date
 from typing import Any, Iterable
 from urllib.parse import quote
 
@@ -69,6 +68,18 @@ class ERPNextClient:
 
     def create(self, doctype: str, payload: dict[str, Any]) -> dict[str, Any]:
         return self.request("POST", f"/api/resource/{quote(doctype)}", json=payload)["data"]
+
+    def find_one(self, doctype: str, field: str, value: str) -> dict[str, Any] | None:
+        data = self.request(
+            "GET",
+            f"/api/resource/{quote(doctype)}",
+            params={
+                "fields": json.dumps(["name", field]),
+                "filters": json.dumps([[field, "=", value]]),
+                "limit_page_length": 1,
+            },
+        )["data"]
+        return data[0] if data else None
 
     def submit(self, doctype: str, name: str) -> dict[str, Any]:
         return self.request(
