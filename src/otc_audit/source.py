@@ -97,7 +97,18 @@ def canonicalize_columns(frame: pd.DataFrame) -> pd.DataFrame:
     missing = sorted(set(ordered).difference(result.columns))
     if missing:
         raise ValueError(f"Workbook is missing expected columns: {missing}")
-    return result[ordered].copy()
+    result = result[ordered].copy()
+    for column in ("invoice_no", "stock_code", "description", "country"):
+        result[column] = result[column].astype("string").str.strip()
+    result["invoice_no"] = result["invoice_no"].str.replace(r"\.0$", "", regex=True)
+    result["stock_code"] = result["stock_code"].str.replace(r"\.0$", "", regex=True)
+    result["customer_id"] = (
+        pd.to_numeric(result["customer_id"], errors="coerce").round().astype("Int64").astype("string")
+    )
+    result["quantity"] = pd.to_numeric(result["quantity"], errors="coerce").astype("Int64")
+    result["unit_price"] = pd.to_numeric(result["unit_price"], errors="coerce")
+    result["invoice_date"] = pd.to_datetime(result["invoice_date"], errors="coerce")
+    return result
 
 
 def load_workbook(workbook: Path) -> pd.DataFrame:
